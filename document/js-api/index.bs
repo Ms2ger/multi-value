@@ -910,7 +910,7 @@ Note: Exported Functions do not have a \[[Construct]] method and thus it is not 
   To <dfn>create a host function</dfn> from the JavaScript object |func|, perform the following steps:
 
     1. Let |hostfunc| be a [=host function=] which performs the following steps when called:
-        1. If the signature contains an [=𝗂𝟨𝟦=] (as argument or result), the host function throws a {{TypeError}} when called.
+        1. If the signature contains an [=𝗂𝟨𝟦=] (as argument or result), the host function triggers a WebAsssembly trap, then throws a {{TypeError}} to the enclosing JavaScript.
         1. Let |arguments| be a [=list=] of the arguments of the invocation of this function.
         1. Let |jsArguments| be an empty [=list=].
         1. For each |arg| in |arguments|,
@@ -924,7 +924,7 @@ Note: Exported Functions do not have a \[[Construct]] method and thus it is not 
             1. If |method| is undefined, [=throw=] a {{TypeError}}.
             1. Let |values| be ? [=IterableToList=](|ret|, |method|).
             1. Let |wasmValues| be a new, empty [=list=].
-            1. Assert: |values| and |results| have the same length.
+            1. If |values| and |results| do not have the same length, trigger a WebAssembly trap, then throw a {{TypeError}} to the enclosing JavaScript.
             1. For each |value| and |resultType| in |values| and |results|, paired linearly,
                 1. [=Append=] [=ToWebAssemblyValue=](|value|, |resultType|) to |wasmValues|.
             1. Return |wasmValues|.
